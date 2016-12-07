@@ -41,6 +41,6 @@ def list_tables(dataset_name, project=None):
     for table in dataset.list_tables():
         print(table.name)
 
-list_tables("isb-cgc:tcga_201510_alpha", project)
+list_tables("isb-cgc:932", project)
 
 
