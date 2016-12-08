@@ -2,6 +2,7 @@
 
 import isb_auth
 import isb_curl
+import sys
 import requests
 
 url = 'https://isb-cgc.appspot.com/_ah/api/cohort_api/v1/cohorts_list'
@@ -21,7 +22,15 @@ url = "https://api-dot-isb-cgc.appspot.com/_ah/api/isb_cgc_api/v2/cohorts/932"
 # resp = requests.get(url, headers=head, params=params)
 resp = requests.get(url, headers=head)
 con = resp.content
-import pdb; pdb.set_trace()
+
+if len(sys.argv) != 2:
+    print 'usage: get_cohorts.py [outfile]'
+    sys.exit(1)
+
+fp = open(sys.argv[1], 'w')
+fp.write(con)
+
+# import pdb; pdb.set_trace()
 # if the endpoint takes a resource in the request body, such as the save_cohort endpoint...
 # url = 'https://isb-cgc.appspot.com/_ah/api/cohort_api/v1/save_cohort?name=my-new-cohort'
 # head.update({'Content-Type': 'application/json'})
