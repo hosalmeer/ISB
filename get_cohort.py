@@ -41,5 +41,3 @@ fp.write(con)
 # import json
 # resp = requests.post(url, headers=head, data=json.dumps(payload))
 # 
-# 
-# 
