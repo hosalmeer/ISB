@@ -39,15 +39,19 @@ for bcode in res:
 
 def get_dtypes(num):
     '''
-    Gets the available data types for each patient barcode, each
-    Datatype has a cloud_storage_path. 
+    Gets the available data types for each patient barcode, 
+    by it's num in the array, each Datatype has a access level and
+    cloud_storage_path. 
     '''
 
     # Can get len also from all_data[num]['data_details_count']
-    for i in range(len(all_data[num]['data_details'])): 
-        print all_data[num]['data_details'][i]['Datatype']
+    # for i in range(len(all_data[num]['data_details'])): 
+        # print all_data[num]['data_details'][i]['Datatype']
 
-
+    for i in range(all_data[num]['data_details_count']): 
+        print all_data[num]['data_details'][i]['SecurityProtocol'] \
+                +'\t\t'\
+                + all_data[num]['data_details'][i]['Datatype']
 
 
 
