@@ -2,7 +2,6 @@ from googleapiclient.discovery import build
 import httplib2
 import re, sys
 import isb_auth
-import pdb;pdb.set_trace()
 
 def get_unauthorized_service():
         api = 'isb_cgc_api'
@@ -58,8 +57,9 @@ def get_dtypes(num):
                 + all_data[num]['data_details'][i]['Datatype']
 
 
-__if__=='__main__':
+if __name__=='__main__':
 
+    isb_auth.get_credentials()
     inp = open(sys.argv[1])
 
     inpt= inp.read()
@@ -70,6 +70,8 @@ __if__=='__main__':
     res = [x.replace('"','') for x in res]
 
     p_mdata = fetch_cohort_data(res)
+
+    import pdb;pdb.set_trace()
 
 
 
