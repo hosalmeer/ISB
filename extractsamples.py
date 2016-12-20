@@ -113,7 +113,7 @@ def fetch(bcs):
     and a dash, should be len=12 for patient and 16 for samples.
     """
     return fetch_patients(bcs) if len(bcs[0])<14 else\
-       fetch_csamples(bcs)
+           fetch_csamples(bcs)
 
 def usage():
 
@@ -136,15 +136,14 @@ if __name__=='__main__':
 
     if len(sys.argv)!=3:
         usage()
-    if sys.argv[2]!=('-s' or '-p'):
+    if sys.argv[1]!=('-s' or '-p'):
         usage()
     
-    print 'GOOD QUIT' 
-    exit(0)
-    inp = open(sys.argv[1])
+    inp = open(sys.argv[-1])
     inpt= inp.read()
 
     res = parse_cohort(inpt) # res represents barcodes
-    mdata = fetch(res)
+    mdata = fetch(res)       # Mdata is a list of dicts
+    tmp   = cohort_dstats(mdata)
 
 
