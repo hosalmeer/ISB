@@ -4,8 +4,8 @@ A class defined to store cohort metadata. This is the second layer in
 getting at the actual data files. The first layer is getting the 
 base information about the cohort that we have already saved in TCGA.
 
-That base information needs to be retrieved by the 'get_cohort' 
-function. The response sends back a json format file which has 
+That base information needs to be retrieved by the 'get_cohort.py' 
+script. The response sends back a json format file which has 
 barcodes for each patient, and a barcode for each biological sample.
 
 Note that some patients have multiple samples.
@@ -17,7 +17,7 @@ Second class fits into the first class as ONE item from the cohort.
 class cm:
 
     def __repr__(self):
-        return "Cohort of %s "
+        return "Cohort of %s samples" % self.size
 
     def __init__(self, resp, barcodes=None):
         '''
@@ -25,7 +25,7 @@ class cm:
         with sample barcodes (not patient).
         '''
         self.all    = list()
-        self.length = len(resp)
+        self.size = len(resp)
 
         if barcodes:
             for s in range(len(resp)):
@@ -41,8 +41,14 @@ class cm:
 
 class sample:
     '''
-    Each sample has seven keys. Each samples has multiple files. 
+    Sample class, has no barcode. Each sample has seven attributes. 
+    Bio-samples have multiple files. 
     '''
+    def __repr__(self):
+
+        return 'Biological sample without barcode for patient %s'\
+                % self.patient
+
     def __init__(self, sampledict):
 
         self.kind    = sampledict['kind']
@@ -58,7 +64,18 @@ class sample:
             self.files.append(fdata(dd))  
         return
         
-    
+class sample_wbc(sample):
+
+    def __repr__(self):
+
+        return 'Biological sample %s for patient %s'\
+                % (self.barcode, self.patient)
+
+    def __init__(self, sampledict, bcode):
+        super(sample_wbc, self).__init__(sampledict)
+        self.barcode = bcode
+        
+
 class fdata:
     '''
     Stores data for the individual file OF WHICH EACH BIOSAMPLE CAN
@@ -82,7 +99,6 @@ class fdata:
 
         # Putting in Nones might be a bad idea tbh
         # since it makes it look like something's there
-
         try:
             self.DataCenterName= inp['DataCenterName']
         except KeyError:
@@ -119,4 +135,7 @@ class fdata:
             self.SDRFFileName  = inp['SDRFFileName']
         except KeyError:
             self.SDRFFileName  = None
+
+
+
 
