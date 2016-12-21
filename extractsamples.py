@@ -2,6 +2,7 @@ from googleapiclient.discovery import build
 import httplib2
 import re, sys
 import isb_auth
+import cmdata
 
 
 def get_unauthorized_service():
@@ -144,7 +145,6 @@ if __name__=='__main__':
     mdata = fetch(res)       # Mdata is a list of dicts
     # tmp = cohort_dstats(mdata)
     # d0  = cmdata.cmdata(mdata)
-    import cmdata
     a0  = cmdata.cm(mdata, res)
     a0.write_download_script()
 
