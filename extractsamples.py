@@ -147,7 +147,5 @@ if __name__=='__main__':
     import cmdata
     a0  = cmdata.cm(mdata, res)
     a0.write_download_script()
-    import pdb;pdb.set_trace()
-
 
 
