@@ -6,6 +6,7 @@ import isb_auth
 
 def get_unauthorized_service():
     """
+    Copy-paste from the isb-cgc examples
     """
     api = 'isb_cgc_api'
     version = 'v2'
@@ -101,7 +102,6 @@ def cohort_dstats(c_mdata):
     big_list  = []
     p_i       = 0
 
-    import pdb;pdb.set_trace()
     for pdata in c_mdata:
         big_list.append('>>> ' + str(pdata['patient']))
         p_i += 1
@@ -144,6 +144,11 @@ if __name__=='__main__':
 
     res = parse_cohort(inpt) # res represents barcodes
     mdata = fetch(res)       # Mdata is a list of dicts
-    tmp   = cohort_dstats(mdata)
+    # tmp = cohort_dstats(mdata)
+    # d0  = cmdata.cmdata(mdata)
+    import cmdata
+    a0  = cmdata.cm(mdata)
+    import pdb;pdb.set_trace()
+
 
 
