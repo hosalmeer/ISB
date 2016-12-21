@@ -46,8 +46,6 @@ def fetch_csamples(bcodes):
     multiple entries can point to a single patient.
     """
 
-    print "\nSAMPLE\n"
-
     all_data= list()
     service = get_unauthorized_service()
 
@@ -147,7 +145,8 @@ if __name__=='__main__':
     # tmp = cohort_dstats(mdata)
     # d0  = cmdata.cmdata(mdata)
     import cmdata
-    a0  = cmdata.cm(mdata)
+    a0  = cmdata.cm(mdata, res)
+    a0.write_download_script()
     import pdb;pdb.set_trace()
 
 

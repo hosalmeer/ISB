@@ -14,7 +14,7 @@ Second class fits into the first class as ONE item from the cohort.
 '''
 
 
-class cm:
+class cm(object):
 
     def __repr__(self):
         return "Cohort of %s samples" % self.size
@@ -30,7 +30,7 @@ class cm:
         if barcodes:
             for s in range(len(resp)):
 
-                tmp = sample(resp[s], barcodes[s])
+                tmp = sample_wbc(resp[s], barcodes[s])
                 self.all.append(tmp)
 
         else:
@@ -39,14 +39,28 @@ class cm:
                 tmp = sample(resp[s])
                 self.all.append(tmp)
 
-class sample:
+    def get_samples(self):
+        return self.all
+
+    def write_download_script(self):
+
+        script_str =[] # Make a list then use '\n',join()
+        script_str.append('#! /bin/bash \n')
+
+        for sample in self.get_samples():
+            for dfile in sample.files:
+                tmp = ' '.join(['gsutil cp',dfile.filepath, '.'])
+                script_str.append(tmp)
+        print '\n'.join(script_str)
+
+class sample(object):
     '''
     Sample class, has no barcode. Each sample has seven attributes. 
     Bio-samples have multiple files. 
     '''
     def __repr__(self):
 
-        return 'Biological sample without barcode for patient %s'\
+        return '< Biological sample without barcode for patient %s >'\
                 % self.patient
 
     def __init__(self, sampledict):
@@ -57,26 +71,28 @@ class sample:
         self.etag    = sampledict['etag']
         self.aliquots= sampledict['aliquots']
         self.biospecimen_data = sampledict['biospecimen_data']
+
         self.__dd__  = sampledict['data_details']
         
         self.files   = list()
         for dd in self.__dd__:
             self.files.append(fdata(dd))  
         return
+
         
 class sample_wbc(sample):
 
     def __repr__(self):
 
-        return 'Biological sample %s for patient %s'\
+        return '< Biological sample %s for patient %s >'\
                 % (self.barcode, self.patient)
 
     def __init__(self, sampledict, bcode):
-        super(sample_wbc, self).__init__(sampledict)
         self.barcode = bcode
+        super(sample_wbc,self).__init__(sampledict)
         
 
-class fdata:
+class fdata(object):
     '''
     Stores data for the individual file OF WHICH EACH BIOSAMPLE CAN
     HAVE MULTIPLE. Takes in a dict as input, one dict per file.
@@ -90,12 +106,12 @@ class fdata:
         # Mandatory fields, I don't think any datafile should be
         # missing these
         self.fields = inp.keys()
-        self.SampleBarcode = inp['SampleBarcode']
-        self.Datatype      = inp['Datatype']
-        self.filepath = inp['cloud_storage_path']
-        self.DataFileName  = inp['DataFileName']
-        self.DataFileNameKey= inp['DataFileNameKey']
-        self.SecurityProtocol = inp['SecurityProtocol']
+        self.SampleBarcode   = inp['SampleBarcode']
+        self.Datatype        = inp['Datatype']
+        self.filepath        = inp['cloud_storage_path']
+        self.DataFileName    = inp['DataFileName']
+        self.DataFileNameKey = inp['DataFileNameKey']
+        self.SecurityProtocol= inp['SecurityProtocol']
 
         # Putting in Nones might be a bad idea tbh
         # since it makes it look like something's there
@@ -135,7 +151,4 @@ class fdata:
             self.SDRFFileName  = inp['SDRFFileName']
         except KeyError:
             self.SDRFFileName  = None
-
-
-
 
