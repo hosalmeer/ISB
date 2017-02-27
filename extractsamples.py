@@ -52,6 +52,7 @@ def fetch_csamples(bcodes):
 
     for bcode in bcodes:
         data = service.samples().get(sample_barcode=bcode).execute()
+        print bcode + ", " + str(data)[:30]
         all_data.append(data)
 
     return all_data
@@ -135,17 +136,21 @@ if __name__=='__main__':
 
     if len(sys.argv)!=3:
         usage()
-    if sys.argv[1]!=('-s' or '-p'):
+    if sys.argv[1]!=('-s') and sys.argv [1]!= '-p':
         usage()
     
     inp = open(sys.argv[-1])
     inpt= inp.read()
 
+    print '================================'
     res = parse_cohort(inpt) # res represents barcodes
+    print '================================'
     mdata = fetch(res)       # Mdata is a list of dicts
     # tmp = cohort_dstats(mdata)
     # d0  = cmdata.cmdata(mdata)
+    print '================================'
     a0  = cmdata.cm(mdata, res)
+    import pdb; pdb.set_trace()
     a0.write_download_script()
 
 
